@@ -1,12 +1,19 @@
 import { CREATE_EVENT, DELETE_EVENT, DELETE_ALL_EVENTS } from '../actions'
 
-interface state {
+interface State {
   id: number
   title: string
   body: string
 }
 
-const events = (state: state[] = [], action: any) => {
+interface Action {
+  id: number
+  type: string
+  title: string
+  body: string
+}
+
+const events = (state: State[] = [], action: Action) => {
   switch(action.type) {
     case CREATE_EVENT:
       const event = { title: action.title, body: action.body }
