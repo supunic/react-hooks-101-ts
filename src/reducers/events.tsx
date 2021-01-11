@@ -1,28 +1,43 @@
-import { CREATE_EVENT, DELETE_EVENT, DELETE_ALL_EVENTS } from '../actions'
+import { EventAction } from '../actions'
 
-interface State {
+export interface EventState {
   id: number
   title: string
   body: string
 }
 
-interface Action {
-  id: number
-  type: string
+interface EventCreateAction {
+  type: EventAction.Create
   title: string
   body: string
 }
 
-const events = (state: State[] = [], action: Action) => {
+interface EventDeleteAction {
+  type: EventAction.Delete
+  id: number
+}
+
+interface EventDeleteAllAction {
+  type: EventAction.DeleteAll
+}
+
+export type EventActions = EventCreateAction | EventDeleteAction | EventDeleteAllAction
+
+const events = (state: EventState[] = [], action: EventActions): EventState[] => {
   switch(action.type) {
-    case CREATE_EVENT:
-      const event = { title: action.title, body: action.body }
+    case EventAction.Create:
       const length = state.length
-      const id = length === 0 ? 1 : state[length - 1].id + 1
-      return [...state, { id, ...event }]
-    case DELETE_EVENT:
+      return [
+        ...state,
+        {
+          id: length === 0 ? 1 : state[length - 1].id + 1,
+          title: action.title,
+          body: action.body
+        }
+      ]
+    case EventAction.Delete:
       return state.filter(event => event.id !== action.id)
-    case DELETE_ALL_EVENTS:
+    case EventAction.DeleteAll:
       return []
     default:
       return state

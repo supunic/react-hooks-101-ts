@@ -1,6 +1,6 @@
-import React from 'react'
+import { OperationLogState } from '../reducers'
 
-const Event = ({ operationLog }: any) => {
+const OperationLog = ({ operationLog }: { operationLog: OperationLogState }) => {
   return (
     <tr>
       <td>{operationLog.description}</td>
@@ -9,4 +9,4 @@ const Event = ({ operationLog }: any) => {
   )
 }
 
-export default Event
+export default OperationLog

@@ -1,26 +1,31 @@
-import { ADD_OPERATION_LOG, DELETE_ALL_OPERATION_LOGS } from '../actions'
+import { OperationLogAction } from '../actions'
 
-interface State {
-  id: number
-  title: string
-  body: string
-}
-
-interface Action {
-  type: string
+export interface OperationLogState {
   description: string
-  operatedAt: Date
+  operatedAt: string
 }
 
-const operationLogs = (state: State[] = [], action: Action) => {
+interface OperationLogCreateAction extends OperationLogState {
+  type: OperationLogAction.Create
+}
+
+interface OperationLogDeleteAllAction {
+  type: OperationLogAction.DeleteAll
+}
+
+export type OperationLogActions = OperationLogCreateAction | OperationLogDeleteAllAction
+
+const operationLogs = (state: OperationLogState[] = [], action: OperationLogActions): OperationLogState[] => {
   switch(action.type) {
-    case ADD_OPERATION_LOG:
-      const operationLog = {
-        description: action.description,
-        operatedAt: action.operatedAt
-      }
-      return [operationLog, ...state]
-    case DELETE_ALL_OPERATION_LOGS:
+    case OperationLogAction.Create:
+      return [
+        {
+          description: action.description,
+          operatedAt: action.operatedAt
+        },
+        ...state
+      ]
+    case OperationLogAction.DeleteAll:
       return []
     default:
       return state

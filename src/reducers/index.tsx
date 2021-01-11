@@ -1,7 +1,22 @@
 import { combineReducers } from 'redux'
 
-import events from './events'
-import operationLogs from './operationLogs'
+import events, { EventState, EventActions } from './events'
+import operationLogs, { OperationLogState, OperationLogActions } from './operationLogs'
+
+export type {
+  EventState,
+  EventActions,
+  OperationLogState,
+  OperationLogActions
+}
+
+export const initialAppState: {
+  events: EventState[]
+  operationLogs: OperationLogState[]
+} = {
+  events: [],
+  operationLogs: []
+}
 
 export default combineReducers({
   events,
