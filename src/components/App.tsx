@@ -9,11 +9,10 @@ import Events from './Events'
 
 import AppContext from '../contexts/AppContext'
 
-console.log(AppContext)
-
 const App = () => {
-  const initialState = {
-    events: []
+  const initialState: any = {
+    events: [],
+    operationLogs: []
   }
   const [state, dispatch] = useReducer(reducer, initialState)
 
