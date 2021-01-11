@@ -1,30 +1,25 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
+
+import { EventAction, OperationLogAction } from '../actions'
 
 import AppContext from '../contexts/AppContext'
-
-import {
-  CREATE_EVENT,
-  DELETE_ALL_EVENTS,
-  ADD_OPERATION_LOG,
-  DELETE_ALL_OPERATION_LOGS
-} from '../actions'
 
 import { timeCurrentIso8601 } from '../utils'
 
 const EventForm = () => {
   const { state, dispatch } = useContext(AppContext)
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
+  const [title, setTitle] = useState<string>('')
+  const [body, setBody] = useState<string>('')
 
   const addEvent = (e: any) => {
     e.preventDefault()
     dispatch({
-      type: CREATE_EVENT,
+      type: EventAction.Create,
       title,
       body
     })
     dispatch({
-      type: ADD_OPERATION_LOG,
+      type: OperationLogAction.Create,
       description: 'イベントを作成しました。',
       operatedAt: timeCurrentIso8601()
     })
@@ -36,9 +31,9 @@ const EventForm = () => {
     e.preventDefault()
     const result = window.confirm('全てのイベントを本当に削除しても良いですか？')
     if (result) {
-      dispatch({ type: DELETE_ALL_EVENTS })
+      dispatch({ type: EventAction.DeleteAll })
       dispatch({
-        type: ADD_OPERATION_LOG,
+        type: OperationLogAction.Create,
         description: '全てのイベントを削除しました。',
         operatedAt: timeCurrentIso8601()
       })
@@ -48,7 +43,7 @@ const EventForm = () => {
   const deleteAllOperationLogs = (e: any) => {
     e.preventDefault()
     const result = window.confirm('全ての操作ログを本当に削除しても良いですか？')
-    if (result) dispatch({ type: DELETE_ALL_OPERATION_LOGS })
+    if (result) dispatch({ type: OperationLogAction.DeleteAll })
   }
 
   const unCreatable = title === '' || body === ''
